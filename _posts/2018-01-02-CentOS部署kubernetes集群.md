@@ -1,4 +1,12 @@
-﻿## CentOS部署 kubernetes 集群
+﻿---
+layout: post
+title:  CentOS7.2部署 kubernetes1.8.x 集群
+categories: jekyll update
+tag: kubernetes
+description: kubernetes 
+keywords: kubernetes
+---
+## CentOS部署 kubernetes 集群
 kubernetes部署有几种方式：kubeadm、minikube 和二进制包，前两者属于自动部署，简化部署操作，自动部署屏蔽了很多细节，使得对各个模块的感知很少，不利于新手学习。所以采用二进制方式安装部署 kubernetes 集群。通过二进制部署集群群，你将理解系统各组件的交互原理，进而能快速解决实际问题。
 ### 1. 基础环境
 - OS：CentOS Linux release 7.3.1611 (Core)  Linux 3.10.0-514.el7.x86_64
