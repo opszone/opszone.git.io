@@ -1,4 +1,4 @@
-﻿---
+---
 layout: post
 title: CentOS部署 kubernetes 集群
 date: 2018-01-02 
@@ -6,7 +6,7 @@ tag: kubernetes
 
 ---
 ## CentOS部署 kubernetes 集群
-kubernetes部署有几种方式：kubeadm、minikube 和二进制包，前两者属于自动部署，简化部署操作，自动部署屏蔽了很多细节，使得对各个模块的感知很少，不利于新手学习。所以采用二进制方式安装部署 kubernetes 集群。通过二进制部署集群群，你将理解系统各组件的交互原理，进而能快速解决实际问题。
+kubernetes 部署有几种方式：kubeadm、minikube 和二进制包，前两者属于自动部署，简化部署操作，自动部署屏蔽了很多细节，使得对各个模块的感知很少，不利于新手学习。所以采用二进制方式安装部署 kubernetes 集群。通过二进制部署集群群，你将理解系统各组件的交互原理，进而能快速解决实际问题。
 ### 1. 基础环境
 - OS：CentOS Linux release 7.3.1611 (Core)  Linux 3.10.0-514.el7.x86_64
 - Kubernetes：1.8.3
@@ -19,13 +19,18 @@ kubernetes部署有几种方式：kubeadm、minikube 和二进制包，前两者
 - kubedns、dashboard、heapster(influxdb、grafana)、EFK(elasticsearch、fluentd、kibana) 集群插件
 
 本次搭建使用三台服务器做实验，角色分配如下：
+
 **Master**：192.168.5.78
+
 **Node**：192.168.5.78、192.168.5.79、192.168.5.80
->**192.168.5.78 这台主机 master 和 node 复用。所有生成证书、执行 kubectl 命令的操作都在这台节点上执行。一旦 node 加入到 kubernetes 集群之后就不需要再登陆 node 节点了。**</font>
+
+>192.168.5.78 这台主机 master 和 node 复用。所有生成证书、执行 kubectl 命令的操作都在这台节点上执行。一旦 node 加入到 kubernetes 集群之后就不需要再登陆 node 节点了。
 
 ### 2. 安装过程
 #### 2.1 创建 TLS 证书和秘钥
+
 Kubernetes 系统的各个组件需要使用TLS证书对通信进行加密，本文档使用 CloudFlare 的 PKI 工具集 cfssl 来生成 Certificate Authority（CA）和其他证书；
+
 **生成的 CA 证书和秘钥文件如下：**
 - ca-key.pem
 - ca.pem
@@ -35,7 +40,9 @@ Kubernetes 系统的各个组件需要使用TLS证书对通信进行加密，本
 - kube-proxy-key.pem
 - admin.pem
 - admin-key.pem
+
 **使用证书的组件如下：**
+
 - etcd：使用 ca.pem、kubernetes-key.pem、kubernetes.pem
 - kube-apiserver：使用 ca.pem、kubernetes-key.pem、kubernetes.pem
 - kubelet：使用 ca.pem
@@ -43,7 +50,8 @@ Kubernetes 系统的各个组件需要使用TLS证书对通信进行加密，本
 - kubectl：使用 ca.pem、admin-key.pem、admin.pem
 - kube-controller-manager：使用 ca-key.pem、ca.pem
 
->**注意：以下操作都在 master 节点及 192.168.5.78 这台主机上执行，证书只需要创建一次即可，以后再向集群中添加节点时只要将 /etc/kubernetes/ 目录下的证书拷贝到新节点上即可。**</font>
+>注意：以下操作都在 master 节点及 192.168.5.78 这台主机上执行，证书只需要创建一次即可，以后再向集群中添加节点时只要将 /etc/kubernetes/ 目录下的证书拷贝到新节点上即可。
+
 ##### 2.1.1 安装 CFSSL
 ```shell
 # mkdir /usr/local/bin && cd /usr/local/bin
@@ -109,6 +117,7 @@ Kubernetes 系统的各个组件需要使用TLS证书对通信进行加密，本
   ]
 }
 ```
+
 - "host"：值是证书有效的域名列表，
 - "CN"：值是一些 ca 用来确定哪些域生成证书，如果提供 "www" 域名，这些 CA 将经常为 "www（例如 www.example.net）" 和 "bare"（例如 example.net）域名提供证书。kube-apiserver 从证书中提取该字段作为请求的用户名（User name ）；浏览器使用该字段验证网站是否合法；
 - "key"：示例中的值是大多数 CA 支持的默认值。（在这种情况下甚至可以省略；这里显示是为了完整性）
@@ -118,13 +127,16 @@ Kubernetes 系统的各个组件需要使用TLS证书对通信进行加密，本
 - "OU": organisational unit, such as the department responsible for owning the key; it can also be used for a "Doing Business As" (DBS) name。组织单位，例如部门负责所属的 key；它也可以用于 “Doing Business As”（DBS）名称。
 - "ST": the state or province。州或省
 
+
 **生成 CA 证书和私钥**
+
 ```shell
 # cfssl gencert -initca ca-csr.json |cfssljson -bare ca -
 # ls ca*
 ca-config.json  ca.csr  ca-csr.json  ca-key.pem  ca.pem
 ```
 ##### 2.1.3 创建 kubernetes 证书
+
 创建 kubernetes 证书签名请求文件 kubernetes-csr.json
 ```shell
 # vim kubernetes-csr.json
