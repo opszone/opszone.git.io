@@ -1,4 +1,4 @@
-﻿---
+---
 
 layout: post
 title: CentOS部署 kubernetes 集群
@@ -8,7 +8,7 @@ tag: kubernetes
 ---
 
 ## CentOS部署 kubernetes 集群
-kubernetes部署有几种方式：kubeadm、minikube 和二进制包，前两者属于自动部署，简化部署操作，自动部署屏蔽了很多细节，使得对各个模块的感知很少，不利于新手学习。所以采用二进制方式安装部署 kubernetes 集群。通过二进制部署集群群，你将理解系统各组件的交互原理，进而能快速解决实际问题。
+kubernetes 部署有几种方式：kubeadm、minikube 和二进制包，前两者属于自动部署，简化部署操作，自动部署屏蔽了很多细节，使得对各个模块的感知很少，不利于新手学习。所以采用二进制方式安装部署 kubernetes 集群。通过二进制部署集群群，你将理解系统各组件的交互原理，进而能快速解决实际问题。
 ### 1. 基础环境
 - OS：CentOS Linux release 7.3.1611 (Core)  Linux 3.10.0-514.el7.x86_64
 - Kubernetes：1.8.3
@@ -23,7 +23,7 @@ kubernetes部署有几种方式：kubeadm、minikube 和二进制包，前两者
 本次搭建使用三台服务器做实验，角色分配如下：
 **Master**：192.168.5.78
 **Node**：192.168.5.78、192.168.5.79、192.168.5.80
->**192.168.5.78 这台主机 master 和 node 复用。所有生成证书、执行 kubectl 命令的操作都在这台节点上执行。一旦 node 加入到 kubernetes 集群之后就不需要再登陆 node 节点了。**</font>
+>**192.168.5.78 这台主机 master 和 node 复用。所有生成证书、执行 kubectl 命令的操作都在这台节点上执行。一旦 node 加入到 kubernetes 集群之后就不需要再登陆 node 节点了。
 
 ### 2. 安装过程
 #### 2.1 创建 TLS 证书和秘钥
