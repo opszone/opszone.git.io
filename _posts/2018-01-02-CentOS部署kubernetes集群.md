@@ -1,4 +1,5 @@
 ﻿---
+
 layout: post
 title:  CentOS7.2部署 kubernetes1.8.x 集群
 categories: jekyll update
