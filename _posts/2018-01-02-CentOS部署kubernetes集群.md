@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ﻿---
+=======
+---
+>>>>>>> eab8edb4bf7f7839075b29c2c9cc06e9ba435fcd
 layout: post
 title:  CentOS7.2部署 kubernetes1.8.x 集群
 categories: jekyll update
@@ -87,6 +91,7 @@ Kubernetes 系统的各个组件需要使用TLS证书对通信进行加密，本
 **字段说明**
 - ca-config.json：可以定义多个 profiles，分别制定不同的过期时间、使用场景等参数；后续签名证书是使用某个 profile；
 - signing：表示改正数可用于签名其他证书；生成的 ca.pem 证书中 CA=TRUE；
+<<<<<<< HEAD
 - server auth：表示 client 可以使用该 CA 对 server 提供的证书进行验证；
 - client auth：表示 server 可以使用该 CA 对 client 提供的证书进行验证；
 
@@ -1030,3 +1035,6 @@ Accept-Ranges: bytes
 
 
   [1]: C:%5CUsers%5Ccbsy%5CDesktop
+=======
+- server auth：表示 client 可以
+>>>>>>> eab8edb4bf7f7839075b29c2c9cc06e9ba435fcd
