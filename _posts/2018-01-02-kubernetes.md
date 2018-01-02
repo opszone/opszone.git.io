@@ -1,4 +1,4 @@
-﻿---
+---
 
 layout: post
 title: CentOS部署 kubernetes 集群
