@@ -1,11 +1,15 @@
 ﻿---
+
 layout: post
 title: CentOS部署 kubernetes 集群
 date: 2018-01-02 
 tag: kubernetes
+
 ---
+
 ## CentOS部署 kubernetes 集群
-kubernetes部署有几种方式：kubeadm、minikube 和二进制包，前两者属于自动部署，简化部署操作，自动部署屏蔽了很多细节，使得对各个模块的感知很少，不利于新手学习。所以采用二进制方式安装部署 kubernetes 集群。通过二进制部署集群群，你将理解系统各组件的交互原理，进而能快速解决实际问题。
+kubernetes 部署有几种方式：kubeadm、minikube 和二进制包，前两者属于自动部署，简化部署操作，自动部署屏蔽了很多细节，使得对各个模块的感知很少，不利于新手学习。所以采用二进制方式安装部署 kubernetes 集群。通过二进制部署集群群，你将理解系统各组件的交互原理，进而能快速解决实际问题。
+
 ### 1. 基础环境
 - OS：CentOS Linux release 7.3.1611 (Core)  Linux 3.10.0-514.el7.x86_64
 - Kubernetes：1.8.3
@@ -20,7 +24,7 @@ kubernetes部署有几种方式：kubeadm、minikube 和二进制包，前两者
 本次搭建使用三台服务器做实验，角色分配如下：
 **Master**：192.168.5.78
 **Node**：192.168.5.78、192.168.5.79、192.168.5.80
->**192.168.5.78 这台主机 master 和 node 复用。所有生成证书、执行 kubectl 命令的操作都在这台节点上执行。一旦 node 加入到 kubernetes 集群之后就不需要再登陆 node 节点了。**</font>
+>192.168.5.78 这台主机 master 和 node 复用。所有生成证书、执行 kubectl 命令的操作都在这台节点上执行。一旦 node 加入到 kubernetes 集群之后就不需要再登陆 node 节点了。
 
 ### 2. 安装过程
 #### 2.1 创建 TLS 证书和秘钥
@@ -42,7 +46,7 @@ Kubernetes 系统的各个组件需要使用TLS证书对通信进行加密，本
 - kubectl：使用 ca.pem、admin-key.pem、admin.pem
 - kube-controller-manager：使用 ca-key.pem、ca.pem
 
->**注意：以下操作都在 master 节点及 192.168.5.78 这台主机上执行，证书只需要创建一次即可，以后再向集群中添加节点时只要将 /etc/kubernetes/ 目录下的证书拷贝到新节点上即可。**</font>
+>注意：以下操作都在 master 节点及 192.168.5.78 这台主机上执行，证书只需要创建一次即可，以后再向集群中添加节点时只要将 /etc/kubernetes/ 目录下的证书拷贝到新节点上即可。**
 ##### 2.1.1 安装 CFSSL
 ```shell
 # mkdir /usr/local/bin && cd /usr/local/bin
@@ -331,7 +335,7 @@ Token 可以是任意的包涵 128bit 的字符串，使用安全的随机数发
 ${BOOTSTRAP_TOKEN},kubelet-bootstrap,10001,"system:kubelet-bootstrap"
 EOF
 ```
-><font color=red>**注意：在进行后续操作前检查 token.csv 文件，确认 ${BOOTSTRAP_TOKEN} 环境变量已经被真实的值替换。**</font>
+>注意：在进行后续操作前检查 token.csv 文件，确认 ${BOOTSTRAP_TOKEN} 环境变量已经被真实的值替换。
 
 **BOOTSTRAP_TOKEN** 将被写入到 kube-apiserver 使用的 token.csv 文件和 kubelet 使用的 bootstrap.kubeconfig 文件，如果后续重新生成了 BOOTSTRAP_TOKEN，则需要：更新 token.csv 文件，分发到所有机器 (master 和 node）的 /etc/kubernetes/ 目录下，分发到 Node 节点上非必需；重新生成 bootstrap.kubeconfig 文件，分发到所有 Node 机器的 /etc/kubernetes/ 目录下；重启 kube-apiserver 和 kubelet 进程；重新 approve kubelet 的 csr 请求；
 ```shell
@@ -472,7 +476,7 @@ cluster is healthy
 # kubectl config use-context kubernetes
 ```
 admin.pem 证书 OU 字段值为 system:master，kube-apiserver 预定义的 RolieBinding cluster-admin 将 Group system:master 与 Role cluster-admin 绑定，该 Role 授予了调用 kube-apiserver 相关 API 的权限；生成的 kubeconfig 被保存到 ~/.kube/config 文件；
-><font color=red>**~/.kube/config 文件拥有对该集群的最高权限，请妥善保管。**</font>
+>~/.kube/config 文件拥有对该集群的最高权限，请妥善保管。
 #### 2.5 部署master节点
 kubernetes master 节点包含的组件：
 - kube-apiserver
