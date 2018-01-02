@@ -1,14 +1,14 @@
 ﻿---
 layout: post
-title:  "CentOS7.2部署 kubernetes1.8.x 集群"
-categories: jekyll update
+title: "CentOS7.2部署 kubernetes1.8.x 集群"
+date: 2018-01-02
 tag: kubernetes
 description: kubernetes 
 keywords: kubernetes
 ---
 
 ## CentOS部署 kubernetes 集群
-kubernetes部署有几种方式：kubeadm、minikube 和二进制包，前两者属于自动部署，简化部署操作，自动部署屏蔽了很多细节，使得对各个模块的感知很少，不利于新手学习。所以采用二进制方式安装部署 kubernetes 集群。通过二进制部署集群群，你将理解系统各组件的交互原理，进而能快速解决实际问题。
+kubernetes 部署有几种方式：kubeadm、minikube 和二进制包，前两者属于自动部署，简化部署操作，自动部署屏蔽了很多细节，使得对各个模块的感知很少，不利于新手学习。所以采用二进制方式安装部署 kubernetes 集群。通过二进制部署集群群，你将理解系统各组件的交互原理，进而能快速解决实际问题。
 ### 1. 基础环境
 - OS：CentOS Linux release 7.3.1611 (Core)  Linux 3.10.0-514.el7.x86_64
 - Kubernetes：1.8.3
@@ -323,6 +323,7 @@ kube-proxy.csr  kube-proxy-csr.json  kube-proxy-key.pem  kube-proxy.pem
 # mkdir -p /etc/kubernetes/ssl
 # cp *.pem /etc/kubernetes/ssl
 ```
+
 
 #### 2.2 创建 kubeconfig 文件
 先在 master 节点上安装 kubectl 然后再进行后面的操作。kubelet、kube-proxy 等 Node 机器上的进程与 Master 机器的 kube-apiserver 进程通信时需要认证和授权；kubernetes1.4 开始支持由 kube-apiserver 为客户端生成 TLS 证书的 TLS Bootstrapping 功能，这样就不需要为每个客户端生成证书了；该功能**当前仅支持为** kubelet 生成证书。安装 kubectl 后，后面的操作只需要在 master 节点上执行，生成的*.kubeconfig 文件可以直接拷贝到 Node 节点的 /etc/kubernetes 目录下。
