@@ -22,8 +22,11 @@ kubernetes 部署有几种方式：kubeadm、minikube 和二进制包，前两�
 - kubedns、dashboard、heapster(influxdb、grafana)、EFK(elasticsearch、fluentd、kibana) 集群插件
 
 本次搭建使用三台服务器做实验，角色分配如下：
+
 **Master**：192.168.5.78
+
 **Node**：192.168.5.78、192.168.5.79、192.168.5.80
+
 >192.168.5.78 这台主机 master 和 node 复用。所有生成证书、执行 kubectl 命令的操作都在这台节点上执行。一旦 node 加入到 kubernetes 集群之后就不需要再登陆 node 节点了。
 
 ### 2. 安装过程
@@ -38,7 +41,9 @@ Kubernetes 系统的各个组件需要使用TLS证书对通信进行加密，本
 - kube-proxy-key.pem
 - admin.pem
 - admin-key.pem
+
 **使用证书的组件如下：**
+
 - etcd：使用 ca.pem、kubernetes-key.pem、kubernetes.pem
 - kube-apiserver：使用 ca.pem、kubernetes-key.pem、kubernetes.pem
 - kubelet：使用 ca.pem
@@ -46,7 +51,8 @@ Kubernetes 系统的各个组件需要使用TLS证书对通信进行加密，本
 - kubectl：使用 ca.pem、admin-key.pem、admin.pem
 - kube-controller-manager：使用 ca-key.pem、ca.pem
 
->注意：以下操作都在 master 节点及 192.168.5.78 这台主机上执行，证书只需要创建一次即可，以后再向集群中添加节点时只要将 /etc/kubernetes/ 目录下的证书拷贝到新节点上即可。**
+>注意：以下操作都在 master 节点及 192.168.5.78 这台主机上执行，证书只需要创建一次即可，以后再向集群中添加节点时只要将 /etc/kubernetes/ 目录下的证书拷贝到新节点上即可。
+
 ##### 2.1.1 安装 CFSSL
 ```shell
 # mkdir /usr/local/bin && cd /usr/local/bin
